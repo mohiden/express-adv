@@ -7,8 +7,9 @@ const express_1 = __importDefault(require("express"));
 const config_1 = __importDefault(require("config"));
 const utils_1 = require("./utils");
 const routes_1 = __importDefault(require("./routes"));
-const port = config_1.default.get('port');
+const port = config_1.default.get("port");
 const app = (0, express_1.default)();
+app.use(express_1.default.json());
 app.listen(port, async () => {
     utils_1.log.info("Running");
     await (0, utils_1.connect)();
