@@ -1,5 +1,5 @@
 import { omit } from "lodash";
-import { DocumentDefinition } from "mongoose";
+import { DocumentDefinition, FilterQuery } from "mongoose";
 import { User, IUser } from "../models";
 
 export async function createUser(
@@ -11,6 +11,9 @@ export async function createUser(
     const user = await User.create(input);
     return omit(user.toJSON(), "password");
   } catch (e) {
+    if(e.code === 11000) {
+    throw new Error("this email is taken already!");
+    }
     throw new Error(e);
   }
 }
@@ -33,3 +36,8 @@ export async function validatePassword({
 
   return omit(user.toJSON(), "password");
 }
+
+export async function findUser(query: FilterQuery<IUser>){
+  return User.findOne(query).lean();
+
+} 

@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.validatePassword = exports.createUser = void 0;
+exports.findUser = exports.validatePassword = exports.createUser = void 0;
 const lodash_1 = require("lodash");
 const models_1 = require("../models");
 async function createUser(input) {
@@ -9,6 +9,9 @@ async function createUser(input) {
         return (0, lodash_1.omit)(user.toJSON(), "password");
     }
     catch (e) {
+        if (e.code === 11000) {
+            throw new Error("this email is taken already!");
+        }
         throw new Error(e);
     }
 }
@@ -24,4 +27,8 @@ async function validatePassword({ email, password, }) {
     return (0, lodash_1.omit)(user.toJSON(), "password");
 }
 exports.validatePassword = validatePassword;
+async function findUser(query) {
+    return models_1.User.findOne(query).lean();
+}
+exports.findUser = findUser;
 //# sourceMappingURL=user.service.js.map
