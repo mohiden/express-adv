@@ -1,7 +1,8 @@
 import { Express, Response } from "express";
 import {  requireUser, validate } from "./middleware";
-import { createUserHandler, createUserSession, deleteSessionHandler, getUserSessionsHandler } from "./controllers";
-import { createUserSchema, createUserSessionSchema } from "./schemas";
+import { createUserHandler, createUserSession, deleteProductHandler, deleteSessionHandler, getUserSessionsHandler } from "./controllers";
+import { createUserSchema, createUserSessionSchema, findProductSchema, createProductSchema, updateProductSchema, deleteProductSchema } from "./schemas";
+import { findProductHandler, updateProductHandler, createProductHandler } from "./controllers";
 
 export default function routes(app: Express) {
   app.get("/healthcheck", (_, res: Response) => {
@@ -15,4 +16,8 @@ export default function routes(app: Express) {
   app.get('/api/session' ,requireUser, getUserSessionsHandler);
   app.delete('/api/session', requireUser, deleteSessionHandler);
 
+  app.post('/api/product',[validate(createProductSchema), requireUser], createProductHandler);
+  app.get('/api/product/:productId',validate(findProductSchema), findProductHandler);
+  app.put('/api/product/:productId',[validate(updateProductSchema), requireUser], updateProductHandler);
+  app.delete('/api/product/:productId',[validate(deleteProductSchema), requireUser], deleteProductHandler);
 }

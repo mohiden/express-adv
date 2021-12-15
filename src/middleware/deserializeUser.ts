@@ -11,6 +11,7 @@ export async function deserializeUser(req: Request, res: Response, next: NextFun
     if(!accessToken ) return next()
 
     const {decoded, expired} = verifyJwt(accessToken);
+    
 
     if(decoded) {
         res.locals.user = decoded;
@@ -25,7 +26,6 @@ export async function deserializeUser(req: Request, res: Response, next: NextFun
         }
         res.setHeader('x-access-token', newAccessToken);
         const result = verifyJwt(newAccessToken);
-        console.log("USER:",result.decoded);
         res.locals.user = result.decoded;
     }
 

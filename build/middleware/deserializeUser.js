@@ -21,7 +21,6 @@ async function deserializeUser(req, res, next) {
         }
         res.setHeader('x-access-token', newAccessToken);
         const result = (0, utils_1.verifyJwt)(newAccessToken);
-        console.log("USER:", result.decoded);
         res.locals.user = result.decoded;
     }
     return next();
